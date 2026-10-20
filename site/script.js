@@ -366,8 +366,10 @@ const carregarDadosPodioMes = async () => {
       .slice(1)
       .map((l) => {
         const c = l.split(",");
-        return { nome: c[0].trim(), pts: parseInt(c[1]) };
+        return { nome: (c[0] || "").trim(), pts: parseInt(c[1]) };
       })
+      // Ignora linhas vazias/lixo da planilha (nome em branco ou pontos inválidos)
+      .filter((d) => d.nome !== "" && Number.isFinite(d.pts))
       .sort((a, b) => b.pts - a.pts);
 
     // Processa Campeões (Lado Direito)
@@ -378,8 +380,14 @@ const carregarDadosPodioMes = async () => {
       .slice(1)
       .map((l) => {
         const c = l.split(",");
-        return { sem: c[0].trim(), nome: c[1].trim(), pontos: parseInt(c[2]) };
-      });
+        return {
+          sem: (c[0] || "").trim(),
+          nome: (c[1] || "").trim(),
+          pontos: parseInt(c[2]),
+        };
+      })
+      // Semana ainda sem campeão definido (nome vazio ou pontos inválidos) não aparece
+      .filter((c) => c.nome !== "" && Number.isFinite(c.pontos));
 
     // Aplica escala dinâmica para ambos os lados
     aplicarEscalaRanking(pontos.length);
