@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Comercial</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="slider-container">
+      <div class="slide active" id="slide-capa">
+        <div class="capa">
+          <img src="public/capa.png" alt="Relatório de Resultados" />
+        </div>
+      </div>
+
+      <div class="slide" id="slide-ranking">
+        <div class="content-wrapper">
+          <div class="header-ranking">
+            <div class="header-left">
+              <h1>RANKING</h1>
+              <h2>META INDIVIDUAL</h2>
+            </div>
+            <div class="header-right">
+              <div id="data-info">
+                <span class="mes-atual">FEVEREIRO</span> |
+                <span id="semana-atual">1º SEMANA</span>
+              </div>
+            </div>
+          </div>
+          <div class="ranking-container" id="ranking-list">
+            <div class="loading">A carregar Ranking...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-positivacao">
+        <div class="header-ranking">
+          <div class="header-left">
+            <h1>POSITIVAÇÃO</h1>
+            <h2>META x REALIZADO</h2>
+          </div>
+          <div class="header-right">
+            <div class="data-info-pos">
+              <span class="mes-atual">FEVEREIRO</span>
+            </div>
+          </div>
+        </div>
+        <div class="chart-container" id="positivacao-chart">
+          <div class="loading">A gerar Gráfico...</div>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-capa-horario">
+        <div class="capa">
+          <img src="public/4.png" alt="Capa Horário" />
+        </div>
+      </div>
+
+      <div class="slide" id="slide-horario">
+        <div class="header-ranking">
+          <div class="header-left">
+            <h1>HORÁRIO DE ENTRADA</h1>
+            <h2>PONTUALIDADE E PRESENÇA</h2>
+          </div>
+          <div class="header-right">
+            <div class="data-info-pos">
+              <span class="mes-atual">FEVEREIRO</span>
+            </div>
+          </div>
+        </div>
+        <div class="table-horario-container">
+          <table class="tabela-horario" id="tabela-horario-content">
+            <thead>
+              <tr>
+                <th>CONSULTOR</th>
+                <th>SEG</th>
+                <th>TER</th>
+                <th>QUA</th>
+                <th>QUI</th>
+                <th>SEX</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-capa-premios">
+        <div class="capa">
+          <img src="public/6.png" alt="Capa Prêmios" />
+        </div>
+      </div>
+
+      <div class="slide" id="slide-meta-semanal">
+        <div class="header-ranking">
+          <div class="header-left">
+            <h1>META SEMANAL</h1>
+            <h2>DESEMPENHO POR SEMANA</h2>
+          </div>
+          <div class="header-right">
+            <div class="data-info-pos">
+              <span class="mes-atual">FEVEREIRO</span>
+            </div>
+          </div>
+        </div>
+        <div class="table-horario-container">
+          <table class="tabela-horario" id="tabela-meta-semanal">
+            <thead>
+              <tr>
+                <th>CONSULTOR</th>
+                <th>1ª SEM</th>
+                <th>2ª SEM</th>
+                <th>3ª SEM</th>
+                <th>4ª SEM</th>
+                <th>5ª SEM</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="slide" id="slide-capa-podio">
+        <div class="capa">
+          <img src="public/8.png" alt="Capa Pódio" />
+        </div>
+      </div>
+
+      <div class="slide" id="slide-podio-mes">
+        <div class="header-ranking">
+          <div class="header-left">
+            <h1>PÓDIO DO MÊS</h1>
+            <h2>RESULTADOS CONSOLIDADOS</h2>
+          </div>
+          <div class="header-right">
+            <div class="data-info-pos">
+              <span class="mes-atual">FEVEREIRO</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="podio-split-layout">
+          <div class="podio-lado-esquerdo">
+            <h3 class="titulo-sessao">PONTUAÇÃO ACUMULADA</h3>
+            <div class="ranking-container" id="podio-mes-chart"></div>
+          </div>
+
+          <div class="podio-lado-direito">
+            <h3 class="titulo-sessao">CAMPEÕES DAS SEMANAS</h3>
+            <div class="campeoes-grid-2x2" id="campeoes-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

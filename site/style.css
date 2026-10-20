@@ -1,0 +1,561 @@
+:root {
+  --vermelho: #b12b3d;
+  --branco: #f3f3f3;
+  --cinza-escuro: #6c6c6b;
+  --bg-black: #1a1a1a;
+
+  /* Variáveis dinâmicas — injetadas via JS com base na quantidade de dados */
+  --item-count: 5;
+  --ranking-gap: 30px;
+  --ranking-bar-height: 70px;
+  --ranking-font: 1.8rem;
+  --ranking-foto: 70px;
+  --table-font: 1.8rem;
+  --table-padding: 25px;
+  --chart-bar-width: 100px;
+  --chart-gap: 100px;
+  --chart-label-font: 1.3rem;
+  --chart-value-font: 1.8rem;
+  --chart-meta-font: 1.1rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: var(--branco);
+  color: var(--cinza-escuro);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+.slider-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.loading {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--cinza-escuro);
+  margin-top: 50px;
+}
+
+/* --- SLIDE 1 & 4: CAPAS (IMAGEM CHEIA) --- */
+.capa,
+.capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- CABEÇALHOS (PADRÃO) --- */
+.header-ranking {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: clamp(10px, 2vh, 30px);
+  padding: 0 40px;
+  flex-shrink: 0;
+}
+
+.header-left h1 {
+  font-size: clamp(2rem, 5vw, 5rem);
+  line-height: 0.9;
+  font-weight: 700;
+  color: var(--cinza-escuro);
+}
+
+.header-left h2 {
+  font-size: clamp(1rem, 2vw, 2rem);
+  font-weight: 300;
+  color: var(--vermelho);
+  letter-spacing: 2px;
+}
+
+.header-right #data-info,
+.header-right .data-info-pos {
+  font-size: clamp(0.9rem, 1.4vw, 1.6rem);
+  font-weight: 600;
+  background-color: var(--vermelho);
+  color: var(--branco);
+  padding: 12px 30px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+/* --- SLIDE 2: RANKING (HORIZONTAL) --- */
+#slide-ranking {
+  padding: clamp(15px, 3vh, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.content-wrapper {
+  width: 65%;
+  margin: 0 auto;
+  /* Permite scroll se necessário em casos extremos */
+  overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  scrollbar-width: none;
+}
+
+.content-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.ranking-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ranking-gap);
+}
+
+.ranking-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.5vw, 20px);
+}
+
+.foto-vendedor {
+  width: var(--ranking-foto);
+  height: var(--ranking-foto);
+  border-radius: 50%;
+  background-color: var(--cinza-escuro);
+  object-fit: cover;
+  border: 3px solid var(--vermelho);
+  flex-shrink: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.termometro-bg {
+  flex-grow: 1;
+  height: var(--ranking-bar-height);
+  background-color: var(--cinza-escuro);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  border-radius: 35px;
+}
+
+.termometro-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--vermelho);
+  transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: 35px 0 0 35px;
+}
+
+.info-vendedor-interna {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 clamp(10px, 2vw, 40px);
+  z-index: 2;
+  font-size: var(--ranking-font);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--branco);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* --- SLIDE 3: POSITIVAÇÃO (VERTICAL COMPACTO) --- */
+#slide-positivacao {
+  padding: clamp(15px, 3vh, 40px) clamp(20px, 4vw, 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  gap: var(--chart-gap);
+  align-items: flex-end;
+  padding-bottom: 20px;
+  height: 100%;
+  margin-top: clamp(10px, 2vh, 30px);
+  border-bottom: 4px solid var(--cinza-escuro);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chart-container::-webkit-scrollbar {
+  display: none;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: calc(var(--chart-bar-width) * 1.5);
+  min-width: calc(var(--chart-bar-width) * 1.5);
+  position: relative;
+}
+
+.meta-label {
+  margin-bottom: 5px;
+  font-size: var(--chart-meta-font);
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.bar-goal {
+  width: var(--chart-bar-width);
+  background-color: var(--cinza-escuro);
+  border-radius: 0;
+  position: relative;
+  transition: height 1.5s ease-out;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-fill-vertical {
+  width: 100%;
+  background-color: var(--vermelho);
+  height: 0%;
+  transition: height 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+  position: relative;
+}
+
+/* Valor Alcançado (Flutuando) */
+.floating-value {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--vermelho);
+  font-weight: 700;
+  font-size: var(--chart-value-font);
+  white-space: nowrap;
+  text-shadow: 1px 1px 0px #fff;
+}
+
+.bar-label-name {
+  margin-top: clamp(5px, 1vh, 15px);
+  font-size: var(--chart-label-font);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--vermelho);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* --- SLIDE 5: HORÁRIO DE ENTRADA (TABELA) --- */
+#slide-horario {
+  padding: clamp(15px, 3vh, 40px) clamp(20px, 4vw, 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.table-horario-container {
+  margin-top: clamp(10px, 2vh, 30px);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: calc(100vh - 200px);
+  scrollbar-width: none;
+}
+
+.table-horario-container::-webkit-scrollbar {
+  display: none;
+}
+
+.tabela-horario {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.tabela-horario thead th {
+  background-color: var(--vermelho);
+  color: var(--branco);
+  font-size: clamp(0.9rem, 1.3vw, 1.5rem);
+  padding: var(--table-padding);
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #c0392b;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.tabela-horario tbody td {
+  padding: var(--table-padding);
+  text-align: center;
+  border-bottom: 2px solid #eee;
+  font-size: var(--table-font);
+  color: var(--cinza-escuro);
+  vertical-align: middle;
+}
+
+.tabela-horario tbody td:first-child {
+  font-weight: 700;
+  text-align: left;
+  padding-left: clamp(15px, 2vw, 40px);
+  border-right: 2px solid #eee;
+  width: 25%;
+}
+
+/* ÍCONES DA TABELA */
+.icon-check {
+  color: #27ae60;
+  font-size: calc(var(--table-font) * 1.2);
+}
+.icon-heart {
+  color: var(--vermelho);
+  font-size: calc(var(--table-font) * 1.2);
+}
+.icon-x {
+  color: #c0392b;
+  font-size: calc(var(--table-font) * 1.2);
+  font-weight: 700;
+}
+
+/* --- SLIDE 6: CAPA PREMIAÇÕES --- */
+/* Reutiliza a classe .capa */
+
+/* --- SLIDE 7: META SEMANAL (TABELA) --- */
+#slide-meta-semanal {
+  padding: clamp(15px, 3vh, 40px) clamp(20px, 4vw, 60px);
+  display: flex;
+  flex-direction: column;
+}
+
+.status-bateu {
+  background-color: #27ae60;
+  color: #fff;
+  padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1vw, 15px);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: clamp(0.7rem, 1vw, 1.2rem);
+  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-neutro {
+  color: #bbb;
+  font-weight: 400;
+}
+
+/* --- SLIDE 9: VENCEDOR DA SEMANA --- */
+#slide-vencedor {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.vencedor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: celebrate 1s ease-out;
+}
+
+.foto-vencedor-destaque {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 10px solid var(--vermelho);
+  box-shadow: 0 10px 30px rgba(177, 43, 61, 0.4);
+  margin-bottom: 30px;
+}
+
+.vencedor-info h1 {
+  font-size: 5rem;
+  color: var(--vermelho);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.vencedor-info h2 {
+  font-size: 3.5rem;
+  color: var(--cinza-escuro);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.vencedor-badge {
+  margin-top: 20px;
+  background-color: var(--cinza-escuro);
+  color: var(--branco);
+  padding: 15px 40px;
+  border-radius: 50px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Animação de entrada do vencedor */
+@keyframes celebrate {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* --- SLIDE 10: LAYOUT DIVIDIDO --- */
+#slide-podio-mes {
+  padding: clamp(15px, 3vh, 40px) clamp(20px, 4vw, 60px);
+}
+
+.podio-split-layout {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: clamp(10px, 1.5vh, 20px);
+  max-height: calc(100vh - 200px);
+}
+
+.podio-lado-esquerdo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 100%;
+  scrollbar-width: none;
+}
+
+.podio-lado-esquerdo::-webkit-scrollbar {
+  display: none;
+}
+
+.podio-lado-direito {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 100%;
+  scrollbar-width: none;
+}
+
+.podio-lado-direito::-webkit-scrollbar {
+  display: none;
+}
+
+/* TÍTULOS */
+.titulo-sessao {
+  font-size: 1.2rem;
+  color: var(--cinza-escuro);
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-left: 5px solid var(--vermelho);
+  padding-left: 15px;
+  flex-shrink: 0;
+}
+
+/* --- GRID DE CAMPEÕES --- */
+.campeoes-grid-2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: var(--campeoes-gap, 10px);
+  justify-content: center;
+  align-content: flex-start;
+}
+
+.card-campeao-grid {
+  background: #fff;
+  border-radius: 12px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-bottom: 4px solid var(--vermelho);
+  width: var(--campeao-card-width, 240px);
+  height: var(--campeao-card-height, 180px);
+}
+
+/* --- 5º ITEM (Centralizado) --- */
+.card-campeao-grid:nth-child(5) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: var(--campeao-card-width, 240px);
+  height: var(--campeao-card-height, 180px);
+  margin-top: -5px;
+}
+
+/* FOTO */
+.foto-grid {
+  width: var(--campeao-foto, 110px);
+  height: var(--campeao-foto, 110px);
+  border-radius: 50%;
+  border: 3px solid var(--vermelho);
+  object-fit: cover;
+  margin-bottom: 5px;
+}
+
+.label-sem-grid {
+  font-size: clamp(0.6rem, 0.8vw, 0.8rem);
+  font-weight: 800;
+  color: var(--vermelho);
+  text-transform: uppercase;
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.nome-sem-grid {
+  font-size: clamp(0.7rem, 0.9vw, 0.95rem);
+  font-weight: 600;
+  color: var(--cinza-escuro);
+  line-height: 1.2;
+}
